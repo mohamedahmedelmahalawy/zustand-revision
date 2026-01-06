@@ -2,6 +2,7 @@ import { useCounterStore } from "../../store/CounterStore";
 
 function Button({ type, text }) {
   const subscribedItem = useCounterStore((state) => state[type]);
+  console.log(`button ${type} rendered`);
   return (
     <button
       onClick={subscribedItem}
