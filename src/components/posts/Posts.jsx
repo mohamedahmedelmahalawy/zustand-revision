@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { usePostsStore } from "../../store/postsStore";
+import { usePostsStore } from "../../store/PostsStoreAPI";
 import Post from "../post/Post";
 
 function Posts() {
