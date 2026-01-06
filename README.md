@@ -2,9 +2,12 @@
 
 A practical demonstration of **Zustand**, a small, fast, and scalable state management solution for React applications.
 
+🔗 **[Live Demo](https://zustand-revision.vercel.app/)**
+
 ## 🎯 What is Zustand?
 
 Zustand is a lightweight state management library that provides:
+
 - **Simple API** - Less boilerplate than Redux
 - **No Context Providers** - Direct hook-based access
 - **Automatic Re-render Optimization** - Components only re-render when their subscribed state changes
@@ -41,7 +44,7 @@ import { create } from "zustand";
 export const useCounterStore = create((set) => ({
   // State
   count: 0,
-  
+
   // Actions
   increase: () => set((state) => ({ count: state.count + 1 })),
   decrease: () => set((state) => ({ count: state.count - 1 })),
@@ -50,6 +53,7 @@ export const useCounterStore = create((set) => ({
 ```
 
 ### Key Concepts:
+
 - **`create()`** - Creates a hook to access the store
 - **`set()`** - Updates the state (can use a function or object)
 - **State & Actions** - Defined together in one place
@@ -62,9 +66,9 @@ export const useCounterStore = create((set) => ({
 function Counter() {
   // This component re-renders on EVERY state change
   const { count, increase, decrease, reset } = useCounterStore();
-  
+
   console.log("Counter rendered"); // Logs on every count change
-  
+
   return (
     <div>
       <h3>Count: {count}</h3>
@@ -81,6 +85,7 @@ function Counter() {
 ### ✅ Approach 2: Selective Subscription (CounterTwo.jsx + Children)
 
 #### Parent Component (CounterTwo.jsx)
+
 ```javascript
 function CounterTwo() {
   // This component doesn't subscribe to anything
@@ -99,30 +104,30 @@ function CounterTwo() {
 ```
 
 #### Display Component (CounterValue.jsx)
+
 ```javascript
 function CounterValue() {
   // Only subscribes to count - re-renders when count changes
   const count = useCounterStore((state) => state.count);
-  
+
   return (
-    <h3>Count: <span>{count}</span></h3>
+    <h3>
+      Count: <span>{count}</span>
+    </h3>
   );
 }
 ```
 
 #### Action Component (Button.jsx)
+
 ```javascript
 function Button({ type, text }) {
   // Only subscribes to the function (increase/decrease/reset)
   const subscribedItem = useCounterStore((state) => state[type]);
-  
+
   console.log(`button ${type} rendered`); // Only logs once!
-  
-  return (
-    <button onClick={subscribedItem}>
-      {text}
-    </button>
-  );
+
+  return <button onClick={subscribedItem}>{text}</button>;
 }
 ```
 
@@ -144,6 +149,7 @@ const { count, increase, decrease } = useCounterStore();
 ### Why Do Buttons Not Re-render?
 
 When you click a button:
+
 1. ✅ The function (`increase`) executes and updates `count` in the store
 2. ✅ **CounterValue** re-renders (subscribes to `count`)
 3. ✅ **Button** does NOT re-render (subscribes to `increase` function, which hasn't changed)
@@ -152,12 +158,12 @@ When you click a button:
 
 ## 📊 Re-render Comparison
 
-| Component | Subscribes To | Re-renders When Count Changes? |
-|-----------|---------------|-------------------------------|
-| Counter.jsx | Entire store | ✅ Yes (unnecessary) |
-| CounterTwo.jsx | Nothing | ❌ No (optimal) |
-| CounterValue.jsx | `state.count` | ✅ Yes (necessary) |
-| Button.jsx | `state.increase` | ❌ No (optimal) |
+| Component        | Subscribes To    | Re-renders When Count Changes? |
+| ---------------- | ---------------- | ------------------------------ |
+| Counter.jsx      | Entire store     | ✅ Yes (unnecessary)           |
+| CounterTwo.jsx   | Nothing          | ❌ No (optimal)                |
+| CounterValue.jsx | `state.count`    | ✅ Yes (necessary)             |
+| Button.jsx       | `state.increase` | ❌ No (optimal)                |
 
 ## 🎓 Key Takeaways
 
